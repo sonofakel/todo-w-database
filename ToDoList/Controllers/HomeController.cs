@@ -34,12 +34,51 @@ namespace ToDoList.Controllers
           return View();
         }
 
+        [HttpGet("/category/{catid}/task/{taskid}")]
+        public ActionResult TaskDelete(int catid, int taskid)
+        {
+            Dictionary<string,Object> model = new Dictionary<string,Object> {};
+            Category category = Category.Find(catid);
+            Task deleteMe = Task.Find(taskid);
+            deleteMe.Delete();
+            List<Task> taskList = category.GetTasks();
+            model.Add("category", category);
+
+
+
+            model.Add("tasks", taskList);
+
+            return View("CategoryView", model);
+        }
+
         [HttpGet("/category/{id}")]
         public ActionResult CategoryView(int id)
         {
+            Dictionary<string, Object> model = new Dictionary<string, Object>();
             Category newCategory = Category.Find(id);
-            return View(newCategory);
+            List<Task> taskList = newCategory.GetTasks();
+
+            model.Add("category", newCategory);
+            model.Add("tasks", taskList);
+
+            return View(model);
         }
+
+        [HttpPost("/category/{id}/create-task")]
+        public ActionResult CreateTask(int id)
+        {
+          Dictionary<string, Object> model = new Dictionary<string, Object>();
+
+          Category newCategory = Category.Find(id);
+          Task newTask = new Task(Request.Form["create-task"], newCategory.GetId());
+          newTask.Save();
+
+          model.Add("category", newCategory);
+          model.Add("task", newTask);
+
+          return View(model);
+        }
+
 
     }
 }

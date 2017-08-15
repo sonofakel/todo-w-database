@@ -39,8 +39,9 @@ namespace ToDoList.Tests
          testTask.Save();
 
          //Act
+        List<Task> testList = new List<Task>{testTask};
          List<Task> result = Task.GetAll();
-         List<Task> testList = new List<Task>{testTask};
+
 
          //Assert
          CollectionAssert.AreEqual(testList, result);
@@ -74,6 +75,22 @@ namespace ToDoList.Tests
 
          //Assert
          Assert.AreEqual(testTask, foundTask);
+       }
+       [TestMethod]
+       public void Delete_DeleteTaskInstanceInDatabase_Task()
+       {
+         Task testTask1 = new Task("Cut the dogs hair", 1);
+         Task testTask2 = new Task("Cut the cats hair", 1);
+         testTask1.Save();
+         testTask2.Save();
+
+         List<Task> expected = new List<Task> {testTask2};
+
+         testTask1.Delete();
+         List<Task> actual = Task.GetAll();
+
+
+         CollectionAssert.AreEqual(expected, actual);
        }
    }
 }

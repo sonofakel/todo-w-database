@@ -94,6 +94,22 @@ namespace ToDoList.Models
         _id = (int) cmd.LastInsertedId;
     }
 
+    public void Delete()
+    {
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"DELETE FROM tasks WHERE id = @taskId;";
+
+      MySqlParameter taskId = new MySqlParameter();
+      taskId.ParameterName = "@taskId";
+      taskId.Value = this._id;
+      cmd.Parameters.Add(taskId);
+
+      cmd.ExecuteNonQuery();
+    }
+
     public static void DeleteAll()
      {
        MySqlConnection conn = DB.Connection();

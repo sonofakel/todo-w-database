@@ -1,3 +1,27 @@
-@ {
-  Layout ="_Layout"
+@{
+  Layout = "_Layout";
 }
+
+<h1>Category: @Model["category"].GetName()</h1>
+@if(@Model["tasks"].Count == 0)
+{
+  <h3>No tasks here</h3>
+}
+else
+{
+  <ul>
+  @foreach(var task in Model["tasks"])
+  {
+    <li>@task.GetDescription()<a href="/category/@Model["category"].GetId()/task/@task.GetId()"><button type="button" class="btn btn-danger">X</button></a></li>
+  }
+  </ul>
+}
+
+<form action="/category/@Model["category"].GetId()/create-task" method="post">
+  <label for="create-task">Enter a new task</label>
+  <input type="text" name="create-task">
+  @* <input id='category-id' name='category-id' type='hidden' value='@Model["category"].GetId()'> *@
+  <button type="submit" class="btn btn-info">Add Task</button>
+</form>
+
+<a href="/"><button type="button" class="btn btn-info">Back</button></a>
