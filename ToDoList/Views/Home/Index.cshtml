@@ -1,0 +1,28 @@
+@{
+  Layout = "_Layout";
+}
+
+<div class="jumbotron">
+  <h1>Todo List</h1>
+</div>
+
+<form action="/create-category" method="post">
+  <label for="create-category">Enter your category name below</label>
+  <input type="text" name="create-category">
+  <button type="submit" class="btn btn-info">Create</button>
+</form>
+<form action="delete-categories" method="post">
+  <button type="submit" class="btn btn-danger">Delete Categories</button>
+</form>
+
+@if (@Model.Count == 0)
+{
+  <h3>No categories exist</h3>
+}
+else
+{
+  foreach(var category in @Model)
+  {
+    <p>@category.GetName()</p>
+  }
+}
