@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System;
 using ToDoList.Models;
-using Categories.Models;
 
 namespace ToDoList.Tests
 {
@@ -91,6 +90,20 @@ namespace ToDoList.Tests
 
 
          CollectionAssert.AreEqual(expected, actual);
+       }
+       [TestMethod]
+       public void Update_UpdatesTaskInDatabase_String()
+       {
+         string description = "Walk the Dog";
+         Task testTask = new Task(description, 1);
+         testTask.Save();
+         string newDescription = "Mow the lawn";
+
+         testTask.UpdateDescription(newDescription);
+
+         string result = testTask.GetDescription();
+
+         Assert.AreEqual(newName, result);
        }
    }
 }

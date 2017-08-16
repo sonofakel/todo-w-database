@@ -69,6 +69,7 @@ namespace ToDoList.Models
         Task newTask = new Task(taskName, taskCategoryId, taskId);
         allTasks.Add(newTask);
       }
+      conn.Close();
       return allTasks;
     }
 
@@ -92,6 +93,7 @@ namespace ToDoList.Models
 
         cmd.ExecuteNonQuery();
         _id = (int) cmd.LastInsertedId;
+        conn.Close();
     }
 
     public void Delete()
@@ -108,6 +110,7 @@ namespace ToDoList.Models
       cmd.Parameters.Add(taskId);
 
       cmd.ExecuteNonQuery();
+      conn.Close();
     }
 
     public static void DeleteAll()
@@ -117,6 +120,7 @@ namespace ToDoList.Models
        var cmd = conn.CreateCommand() as MySqlCommand;
        cmd.CommandText = @"DELETE FROM tasks;";
        cmd.ExecuteNonQuery();
+       conn.Close();
      }
      public static Task Find(int id)
       {
@@ -143,7 +147,29 @@ namespace ToDoList.Models
             taskCategoryId = rdr.GetInt32(2);
         }
         Task foundTask = new Task(taskDescription, taskCategoryId, taskId);
+        conn.Close();
         return foundTask;
+      }
+
+      public void UpdateDescription(string newDescription)
+      {
+        MySqlConnection conn = DB.Connection();
+        conn.Open();
+        var cmd = conn.CreateCommand() as MySqlCommand;
+        cmd.CommandText = @"UPDATE tasks SET description = @newDescription WHERE id = @searchId;";
+
+        MySqlParameter searchId = new MySqlParameter();
+        searchId.ParameterName = "@searchId";
+        searchId.Value = _id;
+        cmd.Parameters.Add(searchId);
+
+        MySqlParameter description = new MySqlParameter();
+        description.ParameterName = "@newDescription";
+        description.Value = newDescription;
+        cmd.Parameters.Add(description);
+
+        cmd.ExecuteNonQuery();
+        conn.Close();
       }
   }
 }

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using ToDoList.Models;
-using Categories.Models;
 using System.Collections.Generic;
 using System;
 
@@ -79,6 +78,19 @@ namespace ToDoList.Controllers
           return View(model);
         }
 
+        [HttpGet("/tasks/{id}/edit")]
+        public ActionResult EditTask(int id)
+        {
+          Task thisTask = Task.Find(id);
+          return View(thisTask);
+        }
 
+        [HttpPost("/tasks/{id}/edit")]
+        public ActionResult EditTaskConfirm(int id)
+        {
+          Task thisTask = Task.Find(id);
+          thisTask.UpdateDescription(Request.Form["newname"]);
+          return RedirectToAction("Index");
+        }
     }
 }

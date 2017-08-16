@@ -12,7 +12,7 @@ else
   <ul>
   @foreach(var task in Model["tasks"])
   {
-    <li>@task.GetDescription()<a href="/category/@Model["category"].GetId()/task/@task.GetId()"><button type="button" class="btn btn-danger">X</button></a></li>
+    <li>@task.GetDescription()<a href="/category/@Model["category"].GetId()/task/@task.GetId()"><button type="button" class="btn btn-danger">X</button></a><a href="/tasks/@task.GetId()/edit">Edit</a></li>
   }
   </ul>
 }

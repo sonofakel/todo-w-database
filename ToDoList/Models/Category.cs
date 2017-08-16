@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using MySql.Data.MySqlClient;
-using ToDoList.Models;
 using System;
 
-namespace Categories.Models
+namespace ToDoList.Models
 {
     public class Category
     {
@@ -54,6 +53,7 @@ namespace Categories.Models
 
             cmd.ExecuteNonQuery();
             _id = (int) cmd.LastInsertedId;
+            conn.Close();
         }
         public static List<Category> GetAll()
         {
@@ -70,6 +70,7 @@ namespace Categories.Models
               Category newCategory = new Category(CategoryName, CategoryId);
               allCategories.Add(newCategory);
             }
+            conn.Close();
             return allCategories;
         }
         public static Category Find(int id)
@@ -94,6 +95,7 @@ namespace Categories.Models
               CategoryName = rdr.GetString(1);
             }
             Category newCategory = new Category(CategoryName, CategoryId);
+            conn.Close();
             return newCategory;
         }
 
@@ -119,6 +121,7 @@ namespace Categories.Models
             Task newTask = new Task(taskDescription, taskCategoryId, taskId);
             allCategoryTasks.Add(newTask);
           }
+          conn.Close();
           return allCategoryTasks;
         }
 
@@ -129,6 +132,7 @@ namespace Categories.Models
             var cmd = conn.CreateCommand() as MySqlCommand;
             cmd.CommandText = @"DELETE FROM categories;";
             cmd.ExecuteNonQuery();
+            conn.Close();
         }
     }
 }
